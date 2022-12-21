@@ -25,6 +25,28 @@ const Item  = sequelize.define('item',{
 
 })
 
+const Type = sequelize.define('type', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+})
+
+const Brand = sequelize.define('brand', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+})
+
+const ItemInfo  = sequelize.define('item_info',{
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    title: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.STRING, allowNull: false},
+
+})
+
+const Order  = sequelize.define('order',{
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    status: {type: DataTypes.INTEGER, allowNull: false },
+})
+
 User.hasOne(Basket)
 Basket.belongsTo(User)
 
@@ -34,9 +56,27 @@ BasketItem.belongsTo(Basket)
 Item.hasMany(BasketItem)
 BasketItem.belongsTo(Item)
 
+Order.hasOne(Basket)
+Basket.belongsTo(Order)
+
+Type.hasMany(Item)
+Item.belongsTo(Type)
+
+Brand.hasMany(Item)
+Item.belongsTo(Brand)
+
+Item.hasMany(ItemInfo, {as: 'info'});
+ItemInfo.belongsTo(Item)
+
+
 module.exports = {
     User,
     Basket,
     BasketItem,
-    Item
+    Item,
+    Type,
+    Brand,
+    Order,
+    ItemInfo,
+    Order
 }
